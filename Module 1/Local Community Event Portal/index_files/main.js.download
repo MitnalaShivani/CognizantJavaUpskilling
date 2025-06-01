@@ -1,0 +1,295 @@
+// main.js
+
+// Global variables
+let allEvents = [];
+let filteredEvents = [];
+
+// Cache jQuery selectors
+const eventsContainer = $("#eventsContainer");
+const confirmationMessage = $("#confirmationMessage");
+const confirmationMessageNew = $("#confirmationMessageNew");
+const eventTypeSelect = $("#eventTypeNew");
+const searchInput = $("#searchInput");
+const registrationForm = $("#registrationForm");
+
+// -----------------------------
+// --- Vanilla JS Functions ---
+// -----------------------------
+
+// Show fee for event type in main form (vanilla)
+function showFee() {
+  const eventType = document.getElementById('eventType').value;
+  const feeDisplay = document.getElementById('feeDisplay');
+  let fee = '';
+
+  switch (eventType) {
+    case 'music': fee = '$30'; break;
+    case 'tech': fee = '$50'; break;
+    case 'yoga': fee = '$20'; break;
+    case 'Art & Craft': fee = '$25'; break;
+    case 'Dance': fee = '$40'; break;
+    default: fee = ''; break;
+  }
+  feeDisplay.textContent = fee ? `Fee: ${fee}` : '';
+  savePreference();
+}
+
+// Save event type preference to localStorage
+function savePreference() {
+  const eventType = document.getElementById('eventType').value;
+  localStorage.setItem('preferredEventType', eventType);
+}
+
+// Clear preferences in main form
+function clearPreferences() {
+  localStorage.removeItem('preferredEventType');
+  document.getElementById('eventType').value = '';
+  document.getElementById('feeDisplay').textContent = '';
+  confirmationMessage.text('');
+  confirmationMessage.textContent = 'Preferences cleared.';
+}
+
+// Show fee for new select element (vanilla)
+function showFeeNew() {
+  const eventTypeNew = document.getElementById('eventTypeNew').value;
+  const feeDisplayNew = document.getElementById('feeDisplayNew');
+  let fee = '';
+
+  switch (eventTypeNew) {
+    case 'music': fee = '$30'; break;
+    case 'tech': fee = '$50'; break;
+    case 'yoga': fee = '$20'; break;
+    case 'cooking': fee = '$25'; break;
+    case 'art': fee = '$15'; break;
+    default: fee = ''; break;
+  }
+  feeDisplayNew.textContent = fee ? `Fee: ${fee}` : '';
+}
+
+// Save preference for new select element
+function savePreferenceNew() {
+  const eventTypeNew = document.getElementById('eventTypeNew').value;
+  localStorage.setItem('preferredEventTypeNew', eventTypeNew);
+}
+
+// Clear preferences for new form
+function clearPreferencesNew() {
+  localStorage.removeItem('preferredEventTypeNew');
+  document.getElementById('eventTypeNew').value = '';
+  document.getElementById('feeDisplayNew').textContent = '';
+  confirmationMessageNew.text('');
+  confirmationMessageNew.textContent = 'Preferences cleared.';
+}
+
+// Validate phone number (basic)
+function validatePhone(input) {
+  const phone = input.value.trim();
+  const phoneRegex = /^\d{10}$/;
+  if (phone && !phoneRegex.test(phone)) {
+    alert('Please enter a valid 10-digit phone number.');
+    input.focus();
+  }
+}
+
+// Count characters for textarea in main form
+function countCharacters() {
+  const message = document.getElementById('message').value;
+  document.getElementById('charCount').textContent = `${message.length} characters`;
+}
+
+// Count characters for textarea in new form
+function countCharactersNew() {
+  const messageNew = document.getElementById('messageNew').value;
+  document.getElementById('charCountNew').textContent = `${messageNew.length} characters`;
+}
+
+// Enlarge gallery images on double click
+function enlargeImage(img) {
+  const modal = document.createElement('div');
+  modal.style.position = 'fixed';
+  modal.style.left = 0;
+  modal.style.top = 0;
+  modal.style.width = '100%';
+  modal.style.height = '100%';
+  modal.style.backgroundColor = 'rgba(0,0,0,0.8)';
+  modal.style.display = 'flex';
+  modal.style.justifyContent = 'center';
+  modal.style.alignItems = 'center';
+  modal.style.cursor = 'pointer';
+
+  const enlargedImg = document.createElement('img');
+  enlargedImg.src = img.src;
+  enlargedImg.style.maxWidth = '90%';
+  enlargedImg.style.maxHeight = '90%';
+  enlargedImg.style.borderRadius = '10px';
+  modal.appendChild(enlargedImg);
+
+  modal.onclick = () => document.body.removeChild(modal);
+  document.body.appendChild(modal);
+}
+
+// Find nearby events using geolocation
+function findNearbyEvents() {
+  const geoResult = document.getElementById('geoResult');
+  const geoError = document.getElementById('geoError');
+
+  if (!navigator.geolocation) {
+    geoError.textContent = 'Geolocation is not supported by your browser.';
+    return;
+  }
+
+  geoResult.textContent = 'Locating...';
+  geoError.textContent = '';
+
+  navigator.geolocation.getCurrentPosition(
+    (position) => {
+      geoResult.textContent = `Latitude: ${position.coords.latitude.toFixed(3)}, Longitude: ${position.coords.longitude.toFixed(3)}`;
+      // Additional logic to find nearby events can go here
+    },
+    () => {
+      geoError.textContent = 'Unable to retrieve your location.';
+      geoResult.textContent = '';
+    }
+  );
+}
+
+// Display events as cards (vanilla)
+function displayEvents(eventsList) {
+  eventsContainer.empty();
+  if (eventsList.length === 0) {
+    eventsContainer.text('No events found.');
+    return;
+  }
+
+  eventsList.forEach(({ id, title, date, category, seats, image }) => {
+    const card = $(`
+      <div class="eventCard">
+        <img src="${image}" alt="${title}" />
+        <h3>${title}</h3>
+        <p>Date: ${new Date(date).toLocaleDateString()}</p>
+        <p>Category: ${category}</p>
+        <p>Seats Available: ${seats}</p>
+        <button class="registerBtn" data-id="${id}">Register</button>
+      </div>
+    `);
+    eventsContainer.append(card);
+  });
+}
+
+// Register button onclick handler (delegated)
+eventsContainer.on("click", ".registerBtn", function () {
+  const eventId = parseInt($(this).data("id"), 10);
+  const event = allEvents.find(ev => ev.id === eventId);
+  if (!event) {
+    alert('Event not found!');
+    return;
+  }
+  alert(`You registered for "${event.title}" on ${new Date(event.date).toLocaleDateString()}. Thank you!`);
+});
+
+// Filter events by category from select input (jQuery)
+function filterEvents() {
+  const category = eventTypeSelect.val();
+  let filtered = [...allEvents];
+  if (category) {
+    filtered = filtered.filter(ev => ev.category === category);
+  }
+  filteredEvents = filtered;
+  displayEvents(filteredEvents);
+}
+
+// Quick search events by name with keydown event
+searchInput.on("keydown", function () {
+  setTimeout(() => {
+    const searchTerm = searchInput.val().toLowerCase();
+    let searchResults = [...allEvents];
+    if (searchTerm) {
+      searchResults = searchResults.filter(ev => ev.title.toLowerCase().includes(searchTerm));
+    }
+    displayEvents(searchResults);
+  }, 300);
+});
+
+// Fetch events JSON with loading spinner, using async/await (jQuery version)
+async function fetchEvents() {
+  try {
+    eventsContainer.html('<p>Loading events...</p>');
+    const response = await fetch('events.json');
+    if (!response.ok) throw new Error('Network response was not ok');
+    const data = await response.json();
+    allEvents = data;
+    filteredEvents = [...allEvents];
+    displayEvents(filteredEvents);
+  } catch (error) {
+    eventsContainer.html(`<p style='color: red;'>Error loading events: ${error.message}</p>`);
+  }
+}
+
+// --- Form submission with validation and simulated POST ---
+registrationForm.on("submit", async function (e) {
+  e.preventDefault();
+  confirmationMessage.text('');
+  const name = $(this).find("[name='name']").val().trim();
+  const email = $(this).find("[name='email']").val().trim();
+  const eventType = $(this).find("[name='eventType']").val();
+
+  // Basic validation
+  if (!name) {
+    alert("Please enter your name.");
+    return;
+  }
+  if (!email || !email.includes("@")) {
+    alert("Please enter a valid email.");
+    return;
+  }
+  if (!eventType) {
+    alert("Please select an event.");
+    return;
+  }
+
+  confirmationMessage.text("Submitting registration...");
+
+  // Simulate async POST request
+  try {
+    await new Promise(resolve => setTimeout(resolve, 1500));
+    confirmationMessage.css("color", "green").text(`Thank you, ${name}! Registration successful for ${eventType}.`);
+    registrationForm[0].reset();
+    $("#feeDisplay").text('');
+  } catch (error) {
+    confirmationMessage.css("color", "red").text("Registration failed. Please try again.");
+  }
+});
+
+// On eventType change in registration form show fee
+registrationForm.find("[name='eventType']").on("change", function () {
+  const fees = {
+    music: "$30",
+    tech: "$50",
+    yoga: "$20",
+    "Art & Craft": "$25",
+    Dance: "$40"
+  };
+  const feeDisplay = $("#feeDisplay");
+  const selected = $(this).val();
+  feeDisplay.text(selected ? `Fee: ${fees[selected] || 'N/A'}` : '');
+});
+
+// On document ready, fetch events and initialize
+$(document).ready(() => {
+  fetchEvents();
+
+  // Load preferred event type from localStorage (if any)
+  const preferredType = localStorage.getItem('preferredEventType');
+  if (preferredType) {
+    $('#eventType').val(preferredType);
+    showFee();
+  }
+
+  // Attach change handlers for fee display and preferences (vanilla and jQuery)
+  $('#eventType').on('change', showFee);
+  $('#eventTypeNew').on('change', () => {
+    showFeeNew();
+    savePreferenceNew();
+    filterEvents();
+  });
+});

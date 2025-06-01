@@ -1,0 +1,37 @@
+[
+  {
+    "id": 1,
+    "title": "Jazz Music Night",
+    "date": "2025-06-15T19:00:00Z",
+    "category": "music",
+    "seats": 30
+  },
+  {
+    "id": 2,
+    "title": "Tech Innovations Conference",
+    "date": "2025-07-01T09:00:00Z",
+    "category": "tech",
+    "seats": 50
+  },
+  {
+    "id": 3,
+    "title": "Sunrise Yoga Session",
+    "date": "2025-06-20T06:30:00Z",
+    "category": "yoga",
+    "seats": 20
+  },
+  {
+    "id": 4,
+    "title": "Gourmet Cooking Class",
+    "date": "2025-07-10T15:00:00Z",
+    "category": "cooking",
+    "seats": 15
+  },
+  {
+    "id": 5,
+    "title": "Modern Art Exhibition",
+    "date": "2025-07-20T10:00:00Z",
+    "category": "art",
+    "seats": 40
+  }
+]

@@ -1,0 +1,274 @@
+/* Reset margin and padding */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Body styling */
+body {
+  font-family: 'Roboto', Arial, sans-serif;
+  background-color: #f4f4f4;
+  color: #333;
+  line-height: 1.6;
+  padding: 20px;
+}
+
+/* Header styles */
+header {
+  background: #004080;
+  color: white;
+  padding: 20px 0;
+  text-align: center;
+}
+
+/* Navigation styles */
+nav ul {
+  list-style-type: none;
+  background: #0066cc;
+  display: flex;
+  justify-content: center;
+  padding: 10px 0;
+}
+
+nav ul li {
+  margin: 0 15px;
+  padding: 5px 10px;
+}
+
+nav ul li a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+nav ul li a:hover,
+nav ul li a:active {
+  color: #ffcc00;
+}
+
+/* Highlight class */
+.highlight {
+  background-color: yellow;
+}
+
+/* Table Styling */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+th, td {
+  border: 1px solid #ddd;
+  padding: 12px;
+  background-color: #f9f9f9;
+}
+
+th {
+  background-color: #004080;
+  color: white;
+}
+
+/* Zebra striping */
+tr:nth-child(even) {
+  background-color: #e6f0ff;
+}
+
+/* Typography */
+h2 {
+  font-family: 'Roboto', sans-serif;
+  font-size: 2rem;
+  margin-bottom: 15px;
+  background: linear-gradient(90deg, #004080, #0099ff);
+  -webkit-text-fill-color: transparent;
+}
+
+p, li {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 1rem;
+  margin-bottom: 10px;
+  letter-spacing: 0.5px;
+  line-height: 1.5;
+  text-align: justify;
+}
+
+/* Buttons */
+button {
+  padding: 10px 15px;
+  background-color: #070809;
+  color: white;
+  border: none;
+  margin-top: 10px;
+  cursor: pointer;
+  border-radius: 4px;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+button:disabled {
+  background-color: #888;
+  cursor: not-allowed;
+}
+
+/* Event cards */
+.eventCard {
+  border: 1px solid #ccc;
+  padding: 15px;
+  width: 220px;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  margin: 0;
+}
+
+.eventCard h3 {
+  margin-top: 0;
+  color: #333;
+}
+
+.eventCard p {
+  margin: 5px 0;
+}
+
+.eventCard button {
+  padding: 8px 12px;
+  background-color: #007bff;
+  border: none;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.eventCard button:disabled {
+  background-color: #888;
+  cursor: not-allowed;
+}
+
+/* Container for events cards */
+#eventsContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-top: 10px;
+}
+
+/* Confirmation message styling */
+#confirmationMessage {
+  margin-top: 10px;
+  color: green;
+  font-weight: bold;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+}
+
+/* Uniform image size for gallery and event cards */
+.gallery img,
+.eventCard img {
+  width: 280px;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  display: block;
+  margin: 0 auto; /* center images */
+}
+
+/* List styling */
+nav ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+/* Form inputs styling */
+input[type="text"],
+input[type="email"],
+input[type="date"],
+select,
+textarea {
+  width: 100%;
+  padding: 8px;
+  margin: 8px 0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  outline-offset: 2px;
+  outline-color: transparent;
+  transition: outline-color 0.3s ease;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  outline-color: #007BFF;
+}
+
+/* Multi-column layout for news article */
+.news-article {
+  column-count: 2;
+  column-gap: 30px;
+  column-rule: 1px solid gray;
+  margin-bottom: 30px;
+}
+
+/* Responsive media query */
+@media (max-width: 768px) {
+  nav ul {
+    flex-direction: column;
+    align-items: center;
+  }
+  nav ul li {
+    margin: 8px 0;
+  }
+  .gallery img,
+  .eventCard img {
+    width: 100%;
+    height: auto;
+  }
+  h2 {
+    font-size: 1.5rem;
+  }
+}
+
+/* Comments for organization */
+/* -------------------------------- */
+/* Header styles */
+/* -------------------------------- */
+
+/* -------------------------------- */
+/* Navigation styles */
+/* -------------------------------- */
+
+/* -------------------------------- */
+/* Typography */
+/* -------------------------------- */
+
+/* -------------------------------- */
+/* Buttons */
+/* -------------------------------- */
+
+/* -------------------------------- */
+/* Event cards */
+/* -------------------------------- */
+
+/* -------------------------------- */
+/* Image Gallery & Event Images */
+/* -------------------------------- */
+
+/* -------------------------------- */
+/* Forms */
+/* -------------------------------- */
+
+/* -------------------------------- */
+/* Multi-column news article */
+/* -------------------------------- */
+
+/* -------------------------------- */
+/* Responsive Styles */
+/* -------------------------------- */

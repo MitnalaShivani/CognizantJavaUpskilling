@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Local Community Event Portal</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    header, nav, section, footer {
+      margin-bottom: 20px;
+    }
+    nav a {
+      margin-right: 15px;
+    }
+    #welcomeBanner {
+      background-color: lightblue;
+      padding: 10px;
+      border-radius: 5px;
+    }
+    .highlight {
+      background-color: yellow;
+    }
+    table img {
+      width: 200px;
+      height: 150px;
+      border: 2px solid #333;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    #eventForm input, #eventForm select, #eventForm textarea {
+      margin: 5px 0;
+      width: 100%;
+      padding: 8px;
+      box-sizing: border-box;
+    }
+    #charCount {
+      font-size: 0.9em;
+      color: gray;
+    }
+    .gallery-caption {
+      text-align: center;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body> 
+  <!-- Navigation -->
+  <header>
+    <div style="text-align: center;">
+      <img src="images/logo.jpg" alt="Community Logo" width="80" />
+      <h1 style="text-align: center;">Local Community Events</h1>
+      <h4 style="text-align: center;">||Emphasizing Local Roots and Connections||</h4>
+    </div>
+  </header>
+  <nav>
+    <a href="#home">Home</a>
+    <a href="#events">Events</a>
+    <a href="#contact">Contact</a>
+    <a href="help.html" target="_blank">Help</a>
+  </nav>
+
+  <!-- Welcome -->
+  <div id="welcomeBanner">
+    <h2 style="text-align: center;">Welcome to Our Local Community Events Portal!</h2>
+    <p>Exclusive deals for members! <span style="color: red; font-weight: bold;">Limited time offer!</span></p>
+  </div>
+
+  <!-- Home Section -->
+  <section id="home" style="text-align: center;">
+    <h2 class="highlight" style="text-align: center;">About Our Events</h2>
+    <p>Our community hosts regular cultural, environmental, and tech events to bring people together.</p>
+  </section>
+
+  <!-- Events Section -->
+  <section id="events">
+    <h2 style="text-align: center;">Past Events Gallery</h2>
+    <table>
+      <tr>
+        <td>
+          <img src="images/event1.jpg" alt="Music Fest" title="Music Fest" ondblclick="enlargeImage(this)">
+          <div class="gallery-caption">Music Fest</div>
+        </td>
+        <td>
+          <img src="images/event2.jpg" alt="Food Festival" title="Food Festival" ondblclick="enlargeImage(this)">
+          <div class="gallery-caption">Food Festival</div>
+        </td>
+        <td>
+          <img src="images/event3.jpg" alt="Art Workshop" title="Art Workshop" ondblclick="enlargeImage(this)">
+          <div class="gallery-caption">Art Workshop</div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <img src="images/event4.jpg" alt="Cultural Parade" title="Cultural Parade" ondblclick="enlargeImage(this)">
+          <div class="gallery-caption">Cultural Parade</div>
+        </td>
+        <td>
+          <img src="images/event5.jpg" alt="Yoga Camp" title="Yoga Camp" ondblclick="enlargeImage(this)">
+          <div class="gallery-caption">Yoga Camp</div>
+        </td>
+        <td>
+          <img src="images/event6.jpg" alt="Craft Market" title="Craft Market" ondblclick="enlargeImage(this)">
+          <div class="gallery-caption">Craft Market</div>
+        </td>
+      </tr>
+    </table>
+
+    <h2 style="text-align: center;">Register for an Event</h2>
+    <form id="eventForm" onsubmit="handleSubmit(event)">
+      <label for="name">Name:</label>
+      <input type="text" id="name" name="name" placeholder="Enter your name" required autofocus><br>
+
+      <label for="email">Email:</label>
+      <input type="email" id="email" name="email" placeholder="Enter your email" required><br>
+
+      <label for="phone">Phone:</label>
+      <input type="text" id="phone" name="phone" placeholder="Enter phone" onblur="validatePhone(this)"><br>
+
+      <label for="date">Date:</label>
+      <input type="date" id="date" name="date" required><br>
+
+      <label for="eventType">Event Type:</label>
+      <select id="eventType" name="eventType" onchange="showFee(); savePreference();" required>
+        <option value="">Select</option>
+        <option value="music">Music</option>
+        <option value="tech">Tech</option>
+        <option value="yoga">Yoga</option>
+        <option value="Art & Craft">Art & Craft</option>
+        <option value="Dance">Dance</option>
+      </select><br>
+
+      <p id="feeDisplay" class="highlight"></p>
+
+      <label for="message">Message:</label>
+      <textarea id="message" name="message" rows="4" placeholder="Any message?" onkeyup="countCharacters()"></textarea>
+      <div id="charCount">0 characters</div>
+
+      <button type="submit">Submit</button>
+      <button type="button" onclick="clearPreferences()">Clear Preferences</button>
+
+      <output id="confirmationMessage"></output>
+    </form>
+
+    <!-- Added new code below -->
+
+    <hr>
+
+    <h2 style="text-align: center;">Select Event Type</h2>
+    <select id="eventTypeNew" onchange="showFeeNew(); savePreferenceNew();">
+      <option value="">--Choose--</option>
+      <option value="music">Music</option>
+      <option value="tech">Tech</option>
+      <option value="yoga">Yoga</option>
+      <option value="cooking">Cooking</option>
+      <option value="art">Art</option>
+    </select>
+    <p id="feeDisplayNew"></p>
+
+    <div id="confirmationMessageNew" style="color: green; font-weight: bold;"></div>
+
+    <hr>
+
+
+    <h3 style="text-align: center;">Contact Form</h3>
+    <form id="contactForm" onsubmit="handleSubmit(event);">
+      <label for="phoneNew">Phone Number:</label><br>
+      <input type="text" id="phoneNew" name="phoneNew" onblur="validatePhone(this);" maxlength="10"><br><br>
+
+      <label for="messageNew">Message:</label><br>
+      <textarea id="messageNew" name="messageNew" rows="4" cols="30" oninput="countCharactersNew();"></textarea><br>
+      <small id="charCountNew">0 characters</small><br><br>
+
+      <button type="submit">Submit</button>
+    </form>
+
+    <button onclick="clearPreferencesNew()">Clear Preferences</button>
+
+    <!-- End of added code -->
+
+    <button onclick="findNearbyEvents()">Find Nearby Events</button>
+    <p id="geoResult" class="highlight"></p>
+    <p id="geoError" style="color: red;"></p>
+  </section>
+<hr>
+  <!-- Video -->
+  <section>
+    <h2 style="text-align: center;">Event Promo Video</h2>
+    <video width="400" controls oncanplay="document.getElementById('videoMsg').textContent = 'Video ready to play!'">
+      <source src="videos/event_promo.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+    <p id="videoMsg" class="highlight"></p>
+  </section>
+
+  <!-- Contact Section -->
+  <section id="contact">
+    <h2 style="text-align: center;">Contact Us</h2>
+    <p>Email: contact@community.org</p>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p style="text-align: center;">&copy; 2025 Local Community Portal</p>
+  </footer>
+
+  <!-- External Script -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <script src="main.js"></script>
+</body>
+</html>
